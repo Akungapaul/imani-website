@@ -20,7 +20,8 @@ const services = [
       "Recording and listening exercises",
     ],
     pricing: "Starting at $75/session",
-    cta: "Book a Session",
+    cta: "Learn More",
+    href: "/services/individual",
   },
   {
     id: "choir",
@@ -35,7 +36,8 @@ const services = [
       "Team-building for worship ministry",
     ],
     pricing: "Custom pricing based on group size",
-    cta: "Get a Quote",
+    cta: "Learn More",
+    href: "/services/choir",
   },
   {
     id: "production",
@@ -50,7 +52,8 @@ const services = [
       "Releasing your own Gospel music",
     ],
     pricing: "Starting at $100/session",
-    cta: "Start Producing",
+    cta: "Learn More",
+    href: "/services/production",
   },
 ];
 
@@ -143,7 +146,7 @@ export default function ServicesPage() {
                     {service.pricing}
                   </p>
                   <Link
-                    href="/contact"
+                    href={service.href}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                   >
                     {service.cta}
