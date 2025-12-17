@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant, Cormorant_Garamond } from "next/font/google";
 import { Header, Footer } from "@/components/layout";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import "./globals.css";
 
 const cormorant = Cormorant({
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body
         className={`${cormorant.variable} ${cormorantGaramond.variable} antialiased`}
       >
+        <GoogleAnalytics />
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />

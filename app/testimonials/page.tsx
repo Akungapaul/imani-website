@@ -58,6 +58,45 @@ const stats = [
   { value: "100%", label: "Gospel Focused" },
 ];
 
+const caseStudies = [
+  {
+    title: "From Shy Choir Member to Worship Leader",
+    client: "Michelle T., Atlanta",
+    challenge: "Michelle had been in her church choir for 5 years but always stayed in the back row. She wanted to sing solos but lacked confidence and felt her voice wasn't 'good enough' for Gospel music.",
+    solution: "Over 6 months of individual coaching, we focused on building her Gospel-specific vocal techniques (runs, riffs, dynamics) while simultaneously working on performance confidence and stage presence.",
+    results: [
+      "Sang her first solo within 6 months",
+      "Now regularly leads worship at her church",
+      "Vocal range expanded by nearly an octave",
+      "Mentors other shy singers in her choir",
+    ],
+  },
+  {
+    title: "Worship Team Transformation",
+    client: "Grace Community Church, Houston",
+    challenge: "The church's worship team was talented individually but struggled to blend as a group. Sunday services were inconsistent, and the team lacked a unified Gospel sound.",
+    solution: "A 3-month intensive program covering section training, Gospel harmonies, blend techniques, and spiritual preparation for worship leading. Weekly sessions plus a director training component.",
+    results: [
+      "Team achieved consistent, unified sound",
+      "Congregation engagement increased noticeably",
+      "Music director gained confidence to lead",
+      "Team culture shifted to collaborative ministry",
+    ],
+  },
+  {
+    title: "Bedroom Producer to Released Artist",
+    client: "Marcus W., Charlotte",
+    challenge: "Marcus had purchased production software but couldn't finish a single track. He understood technology but couldn't capture the authentic Gospel sound he envisioned.",
+    solution: "8 sessions covering Gospel-specific production techniques, sound selection, arrangement, and mixing. Project-based learning with the goal of completing one professional track.",
+    results: [
+      "Completed first professional Gospel track",
+      "Creates weekly backing tracks for church",
+      "Released debut single on streaming platforms",
+      "Now teaches basic production to youth ministry",
+    ],
+  },
+];
+
 export default function TestimonialsPage() {
   return (
     <>
@@ -119,6 +158,120 @@ export default function TestimonialsPage() {
                 </footer>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Case Studies */}
+      <section className="bg-muted py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              Transformation Case Studies
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Detailed stories showing the journey from challenge to transformation
+            </p>
+          </div>
+          <div className="mx-auto mt-16 max-w-5xl space-y-12">
+            {caseStudies.map((study, index) => (
+              <div
+                key={index}
+                className="rounded-2xl bg-card p-8 shadow-sm ring-1 ring-border lg:p-12"
+              >
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <h3 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+                    {study.title}
+                  </h3>
+                  <span className="text-sm font-medium text-primary">
+                    {study.client}
+                  </span>
+                </div>
+                <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                      The Challenge
+                    </h4>
+                    <p className="mt-3 text-foreground">
+                      {study.challenge}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                      The Solution
+                    </h4>
+                    <p className="mt-3 text-foreground">
+                      {study.solution}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                      The Results
+                    </h4>
+                    <ul className="mt-3 space-y-2">
+                      {study.results.map((result, resultIndex) => (
+                        <li key={resultIndex} className="flex items-start gap-2 text-foreground">
+                          <svg
+                            className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M4.5 12.75l6 6 9-13.5"
+                            />
+                          </svg>
+                          <span className="text-sm">{result}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sample Video Section */}
+      <section className="bg-background py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              See Training in Action
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Watch sample lessons to experience my teaching style
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-2">
+            {/* Video Placeholder 1 */}
+            <div className="relative aspect-video overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/50">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <svg className="ml-1 h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <p className="mt-4 font-semibold text-foreground">Gospel Vocal Techniques</p>
+                <p className="text-sm text-muted-foreground">Sample lesson coming soon</p>
+              </div>
+            </div>
+            {/* Video Placeholder 2 */}
+            <div className="relative aspect-video overflow-hidden rounded-2xl bg-card shadow-sm ring-1 ring-border">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/50">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <svg className="ml-1 h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <p className="mt-4 font-semibold text-foreground">Choir Blend Techniques</p>
+                <p className="text-sm text-muted-foreground">Sample lesson coming soon</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

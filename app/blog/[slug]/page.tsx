@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, getBlogPosts } from "@/lib/sanity";
+import ShareButtons from "@/components/blog/ShareButtons";
 
 interface BlogPost {
   _id: string;
@@ -196,6 +197,14 @@ export default async function BlogPostPage({ params }: Props) {
               </p>
             )}
           </article>
+
+          {/* Social Sharing */}
+          <div className="mt-12 border-t border-border pt-8">
+            <ShareButtons
+              title={post.title}
+              url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://imaniachokah.com'}/blog/${slug}`}
+            />
+          </div>
         </div>
       </section>
 

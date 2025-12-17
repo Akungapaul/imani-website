@@ -24,14 +24,25 @@ export default function ContactForm() {
     e.preventDefault()
     setStatus('loading')
 
-    // Simulate form submission
-    // In production, connect to email service like Resend, SendGrid, or Mailchimp
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log('Form submitted:', formData)
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong')
+      }
+
       setStatus('success')
       setFormData({ name: '', email: '', interest: '', message: '' })
-    } catch {
+    } catch (error) {
+      console.error('Form submission error:', error)
       setStatus('error')
     }
   }
