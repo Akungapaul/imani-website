@@ -1,6 +1,44 @@
 import Link from "next/link";
+import { getFeaturedTestimonials } from "@/lib/sanity";
+import type { Testimonial } from "@/types/sanity";
 
-export default function Home() {
+// Static fallback testimonials when Sanity has no featured testimonials
+const fallbackTestimonials: Testimonial[] = [
+  {
+    _id: "fallback-1",
+    _type: "testimonial",
+    quote: "I went from hiding in the back row of the choir to singing my first solo in 6 months. Imani didn't just teach me technique—she helped me find my voice and my confidence.",
+    name: "Michelle T.",
+    role: "Church Choir Member, Atlanta",
+    type: "individual",
+    featured: true,
+  },
+  {
+    _id: "fallback-2",
+    _type: "testimonial",
+    quote: "Our worship team went from inconsistent to excellent in 3 months. Imani understands that Gospel isn't just music—it's ministry.",
+    name: "Pastor David R.",
+    role: "Senior Pastor, Houston",
+    type: "church",
+    featured: true,
+  },
+  {
+    _id: "fallback-3",
+    _type: "testimonial",
+    quote: "After years of straining my voice during worship, Imani taught me proper technique. I can now lead multiple services without losing my voice.",
+    name: "Jasmine K.",
+    role: "Worship Leader, Chicago",
+    type: "individual",
+    featured: true,
+  },
+];
+
+export default async function Home() {
+  // Fetch featured testimonials from Sanity, fall back to static data
+  let testimonials: Testimonial[] = await getFeaturedTestimonials(3);
+  if (!testimonials || testimonials.length === 0) {
+    testimonials = fallbackTestimonials;
+  }
   return (
     <>
       {/* Hero Section */}
@@ -36,8 +74,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What Makes This Special */}
+      {/* Introduction Video Section */}
       <section className="bg-muted py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              Meet Imani
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Learn about my journey, my heart for Gospel music, and how I can help you discover your voice.
+            </p>
+          </div>
+          <div className="mx-auto mt-12 max-w-4xl">
+            <div className="relative aspect-video overflow-hidden rounded-2xl bg-card shadow-lg ring-1 ring-border">
+              {/* Video Placeholder - Replace with actual YouTube/Vimeo embed */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/10">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105">
+                  <svg
+                    className="ml-1 h-8 w-8"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Introduction Video Coming Soon
+                </p>
+              </div>
+              {/* Uncomment and replace VIDEO_ID when video is ready:
+              <iframe
+                className="absolute inset-0 h-full w-full"
+                src="https://www.youtube.com/embed/VIDEO_ID"
+                title="Meet Imani - Gospel Voice Training Introduction"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+              */}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What Makes This Special */}
+      <section className="bg-background py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
@@ -148,25 +229,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial Preview */}
+      {/* Featured Testimonials */}
       <section className="bg-secondary py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <blockquote>
-              <p className="text-2xl font-medium leading-relaxed text-secondary-foreground sm:text-3xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
-                &ldquo;I went from hiding in the back row of the choir to singing my first solo in 6 months.
-                Imani didn&apos;t just teach me technique—she helped me find my voice and my confidence.&rdquo;
-              </p>
-              <footer className="mt-8">
-                <p className="text-base font-semibold text-secondary-foreground">Michelle T.</p>
-                <p className="text-sm text-secondary-foreground/80">Church Choir Member, Atlanta</p>
-              </footer>
-            </blockquote>
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-secondary-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              Transformation Stories
+            </h2>
+            <p className="mt-4 text-lg text-secondary-foreground/80">
+              Real results from Gospel musicians who invested in their gifts
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <div
+                key={testimonial._id}
+                className="flex flex-col rounded-2xl bg-card p-8 shadow-sm"
+              >
+                <blockquote className="flex-1">
+                  <p className="text-lg leading-relaxed text-foreground" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+                    &ldquo;{testimonial.quote}&rdquo;
+                  </p>
+                </blockquote>
+                <footer className="mt-6 border-t border-border pt-6">
+                  <p className="font-semibold text-foreground">{testimonial.name}</p>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                </footer>
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 text-center">
             <Link
               href="/testimonials"
-              className="mt-10 inline-flex items-center text-sm font-medium text-secondary-foreground hover:text-secondary-foreground/80"
+              className="inline-flex items-center text-sm font-medium text-secondary-foreground hover:text-secondary-foreground/80"
             >
-              Read more stories <span aria-hidden="true" className="ml-1">→</span>
+              Read all testimonials <span aria-hidden="true" className="ml-1">→</span>
             </Link>
           </div>
         </div>
