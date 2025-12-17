@@ -1,65 +1,241 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      {/* Hero Section */}
+      <section className="relative bg-background py-24 sm:py-32 lg:py-40">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-medium uppercase tracking-wider text-primary">
+              Gospel Voice Training
+            </p>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              For Singers Who Want to Honor God with Excellence
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-muted-foreground">
+              Comprehensive voice training and music production designed specifically for Gospel musicians.
+              Whether you&apos;re finding your voice for the first time or leading worship,
+              discover your God-given potential.
+            </p>
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-x-6">
+              <Link
+                href="/contact"
+                className="w-full rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 sm:w-auto"
+              >
+                Book a Consultation
+              </Link>
+              <Link
+                href="/services"
+                className="text-sm font-semibold leading-6 text-foreground hover:text-primary"
+              >
+                View Services <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* What Makes This Special */}
+      <section className="bg-muted py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              What Makes This Different
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Not just another music course—training built from the ground up for Gospel
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2">
+            {[
+              {
+                title: "100% Gospel-Focused",
+                description:
+                  "Not a general music site with a Gospel section. Every technique, every lesson is designed specifically for Gospel musicians and the unique demands of Gospel music.",
+              },
+              {
+                title: "Complete Offering",
+                description:
+                  "The only platform combining individual vocal coaching, choir training, AND music production—everything you need under one roof.",
+              },
+              {
+                title: "Authentic Leadership",
+                description:
+                  "15+ years of real ministry and industry experience. Imani understands the heart of Gospel music, not just the technique.",
+              },
+              {
+                title: "Spiritual Understanding",
+                description:
+                  "Gospel isn't just about hitting notes—it's about ministry. Training that honors both the art and the heart behind the music.",
+              },
+            ].map((feature) => (
+              <div
+                key={feature.title}
+                className="rounded-2xl bg-card p-8 shadow-sm ring-1 ring-border"
+              >
+                <h3 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+                  {feature.title}
+                </h3>
+                <p className="mt-4 text-muted-foreground">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Services Preview */}
+      <section className="bg-background py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              How I Can Help
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Whether you&apos;re an individual singer, choir director, or aspiring producer
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-3">
+            {[
+              {
+                title: "Individual Vocal Coaching",
+                description:
+                  "One-on-one training covering Gospel-specific techniques: runs, riffs, dynamics, breathing, and vocal health. From beginner to advanced.",
+                href: "/services#individual",
+              },
+              {
+                title: "Choir & Group Training",
+                description:
+                  "Elevate your worship team or choir with training in harmonies, blend, Gospel arrangements, and section leadership.",
+                href: "/services#choir",
+              },
+              {
+                title: "Music Production",
+                description:
+                  "Create professional Gospel tracks. Learn beat-making, mixing, mastering, and how to capture that authentic Gospel sound.",
+                href: "/services#production",
+              },
+            ].map((service) => (
+              <div
+                key={service.title}
+                className="group relative flex flex-col rounded-2xl bg-card p-8 shadow-sm ring-1 ring-border transition-all hover:shadow-md"
+              >
+                <h3 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+                  {service.title}
+                </h3>
+                <p className="mt-4 flex-1 text-muted-foreground">
+                  {service.description}
+                </p>
+                <Link
+                  href={service.href}
+                  className="mt-6 inline-flex items-center text-sm font-medium text-primary hover:text-primary/80"
+                >
+                  Learn more <span aria-hidden="true" className="ml-1">→</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 text-center">
+            <Link
+              href="/services"
+              className="inline-flex items-center justify-center rounded-full border border-primary bg-transparent px-8 py-3 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              View All Services
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial Preview */}
+      <section className="bg-secondary py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <blockquote>
+              <p className="text-2xl font-medium leading-relaxed text-secondary-foreground sm:text-3xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+                &ldquo;I went from hiding in the back row of the choir to singing my first solo in 6 months.
+                Imani didn&apos;t just teach me technique—she helped me find my voice and my confidence.&rdquo;
+              </p>
+              <footer className="mt-8">
+                <p className="text-base font-semibold text-secondary-foreground">Michelle T.</p>
+                <p className="text-sm text-secondary-foreground/80">Church Choir Member, Atlanta</p>
+              </footer>
+            </blockquote>
+            <Link
+              href="/testimonials"
+              className="mt-10 inline-flex items-center text-sm font-medium text-secondary-foreground hover:text-secondary-foreground/80"
+            >
+              Read more stories <span aria-hidden="true" className="ml-1">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Who This Is For */}
+      <section className="bg-muted py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              Is This For You?
+            </h2>
+          </div>
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              "Church singers wanting to build confidence",
+              "Worship leaders seeking vocal excellence",
+              "Choir directors looking to elevate their teams",
+              "Aspiring Gospel music producers",
+              "Pastors investing in music ministry",
+              "Singers who love Gospel but never had training",
+              "Anyone called to Gospel music ministry",
+              "Musicians wanting Gospel-specific techniques",
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-3 rounded-lg bg-card p-4"
+              >
+                <svg
+                  className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 12.75l6 6 9-13.5"
+                  />
+                </svg>
+                <span className="text-sm text-foreground">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-background py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" style={{ fontFamily: 'var(--font-cormorant-garamond)' }}>
+              Ready to Start Your Journey?
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Book a free consultation to discuss your goals and discover how Gospel voice training can transform your ministry.
+            </p>
+            <div className="mt-10">
+              <Link
+                href="/contact"
+                className="rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+              >
+                Book Your Free Consultation
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
