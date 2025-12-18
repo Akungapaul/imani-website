@@ -1,75 +1,100 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getFAQs } from "@/lib/sanity";
+import type { FAQ } from "@/types/sanity";
 
 export const metadata: Metadata = {
   title: "FAQ",
   description: "Frequently asked questions about Gospel voice training, choir coaching, and music production with Imani Achokah.",
 };
 
+// Fallback FAQ type (simpler than Sanity type)
+interface FallbackFAQ {
+  _id: string;
+  question: string;
+  answerText: string;
+  category: string;
+}
+
 // Static fallback FAQs
-const fallbackFAQs = [
+const fallbackFAQs: FallbackFAQ[] = [
   {
     _id: "faq-1",
     question: "Do I need any prior experience?",
-    answer: "No! Whether you're a complete beginner or experienced singer looking to refine your Gospel technique, there's a program for you. We meet you where you are.",
+    answerText: "No! Whether you're a complete beginner or experienced singer looking to refine your Gospel technique, there's a program for you. We meet you where you are.",
     category: "getting-started",
   },
   {
     _id: "faq-2",
     question: "How are sessions conducted?",
-    answer: "Sessions can be conducted in-person or virtually via video call. Virtual sessions have proven just as effective and allow me to work with students worldwide.",
+    answerText: "Sessions can be conducted in-person or virtually via video call. Virtual sessions have proven just as effective and allow me to work with students worldwide.",
     category: "sessions",
   },
   {
     _id: "faq-3",
     question: "How long until I see results?",
-    answer: "Most students notice improvement within the first few sessions. Significant transformation typically happens within 3-6 months of consistent practice and training.",
+    answerText: "Most students notice improvement within the first few sessions. Significant transformation typically happens within 3-6 months of consistent practice and training.",
     category: "general",
   },
   {
     _id: "faq-4",
     question: "Can you work with my church's schedule?",
-    answer: "Absolutely. For choir and group training, I'm flexible with scheduling and can work around your ministry calendar, including evening and weekend sessions.",
+    answerText: "Absolutely. For choir and group training, I'm flexible with scheduling and can work around your ministry calendar, including evening and weekend sessions.",
     category: "sessions",
   },
   {
     _id: "faq-5",
     question: "What styles of Gospel do you teach?",
-    answer: "I teach all styles: Traditional Gospel, Contemporary Gospel, Praise & Worship, and Urban/Modern Gospel. Your training will be tailored to your preferred style.",
+    answerText: "I teach all styles: Traditional Gospel, Contemporary Gospel, Praise & Worship, and Urban/Modern Gospel. Your training will be tailored to your preferred style.",
     category: "general",
   },
   {
     _id: "faq-6",
     question: "Do you offer group discounts for churches?",
-    answer: "Yes! I offer special pricing packages for churches and ministries. Contact me to discuss your team's needs and get a custom quote.",
+    answerText: "Yes! I offer special pricing packages for churches and ministries. Contact me to discuss your team's needs and get a custom quote.",
     category: "pricing",
   },
   {
     _id: "faq-7",
     question: "What equipment do I need for virtual sessions?",
-    answer: "All you need is a stable internet connection, a device with a camera and microphone (laptop, tablet, or phone), and a quiet space. I'll guide you through optimal setup.",
+    answerText: "All you need is a stable internet connection, a device with a camera and microphone (laptop, tablet, or phone), and a quiet space. I'll guide you through optimal setup.",
     category: "sessions",
   },
   {
     _id: "faq-8",
     question: "Can I cancel or reschedule sessions?",
-    answer: "Yes, with 24-hour notice. I understand ministry schedules can change unexpectedly, so I try to be flexible while respecting everyone's time.",
+    answerText: "Yes, with 24-hour notice. I understand ministry schedules can change unexpectedly, so I try to be flexible while respecting everyone's time.",
     category: "sessions",
   },
   {
     _id: "faq-9",
     question: "Do you offer a free trial or consultation?",
-    answer: "Yes! I offer a free 15-minute consultation to discuss your goals and see if we're a good fit. No commitment required.",
+    answerText: "Yes! I offer a free 15-minute consultation to discuss your goals and see if we're a good fit. No commitment required.",
     category: "getting-started",
   },
   {
     _id: "faq-10",
     question: "What's included in music production training?",
-    answer: "Production training covers DAW basics, Gospel-specific sound design, creating backing tracks, mixing, mastering, and guidance on releasing your music.",
+    answerText: "Production training covers DAW basics, Gospel-specific sound design, creating backing tracks, mixing, mastering, and guidance on releasing your music.",
     category: "general",
   },
 ];
+
+// Helper to render answer from either Sanity or fallback format
+function renderAnswer(faq: FAQ | FallbackFAQ): string {
+  if ("answerText" in faq) {
+    return faq.answerText;
+  }
+  // Extract text from PortableTextBlock array
+  return faq.answer
+    .map((block) => {
+      if (block._type === "block" && block.children) {
+        return block.children.map((child) => ("text" in child ? child.text : "")).join("");
+      }
+      return "";
+    })
+    .join("\n");
+}
 
 const categories = [
   { id: "all", label: "All Questions" },
@@ -81,10 +106,8 @@ const categories = [
 
 export default async function FAQPage() {
   // Fetch FAQs from Sanity, fall back to static data
-  let faqs = await getFAQs();
-  if (!faqs || faqs.length === 0) {
-    faqs = fallbackFAQs;
-  }
+  const sanityFaqs = await getFAQs();
+  const faqs: (FAQ | FallbackFAQ)[] = sanityFaqs.length > 0 ? sanityFaqs : fallbackFAQs;
 
   return (
     <>
@@ -123,7 +146,7 @@ export default async function FAQPage() {
           {/* FAQ Accordion */}
           <div className="mx-auto max-w-3xl">
             <dl className="space-y-6">
-              {faqs.map((faq: { _id: string; question: string; answer: string; category?: string }) => (
+              {faqs.map((faq) => (
                 <details
                   key={faq._id}
                   className="group rounded-2xl bg-card p-6 shadow-sm ring-1 ring-border"
@@ -149,7 +172,7 @@ export default async function FAQPage() {
                     </span>
                   </summary>
                   <dd className="mt-4 text-muted-foreground">
-                    {faq.answer}
+                    {renderAnswer(faq)}
                   </dd>
                 </details>
               ))}

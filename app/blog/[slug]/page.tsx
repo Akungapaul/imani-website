@@ -3,54 +3,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, getBlogPosts } from "@/lib/sanity";
 import ShareButtons from "@/components/blog/ShareButtons";
+import type { BlogPost } from "@/types/sanity";
 
-interface BlogPost {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  excerpt?: string;
-  content?: Array<{
-    _type: string;
-    _key: string;
-    children?: Array<{
-      _type: string;
-      text: string;
-    }>;
-  }>;
-  publishedAt: string;
-  category?: string;
-}
-
-// Placeholder post for demo
-const placeholderPost: BlogPost = {
+// Placeholder post for demo (partial type for fallback)
+const placeholderPost = {
   _id: "demo",
+  _type: "blogPost" as const,
   title: "Getting Started: A Guide to Success",
   slug: { current: "getting-started" },
   excerpt: "Learn the fundamental principles that will set you on the path to achieving your goals.",
-  content: [
-    {
-      _type: "block",
-      _key: "1",
-      children: [
-        {
-          _type: "span",
-          text: "Success doesn't happen overnight. It's the result of consistent effort, strategic planning, and a willingness to learn from both successes and failures.",
-        },
-      ],
-    },
-    {
-      _type: "block",
-      _key: "2",
-      children: [
-        {
-          _type: "span",
-          text: "In this guide, we'll explore the fundamental principles that can help you achieve your goals and build a foundation for long-term success.",
-        },
-      ],
-    },
-  ],
   publishedAt: new Date().toISOString(),
-  category: "Guides",
+  category: "ministry" as const,
 };
 
 type Props = {
@@ -60,12 +23,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  let post: BlogPost | null = null;
-  try {
-    post = await getBlogPost(slug);
-  } catch (error) {
-    console.error("Error fetching blog post:", error);
-  }
+  const post = await getBlogPost(slug);
 
   if (!post && slug !== "getting-started") {
     return {
@@ -82,19 +40,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  let posts: BlogPost[] = [];
-  try {
-    posts = await getBlogPosts();
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-  }
+  const posts = await getBlogPosts();
 
   return posts.map((post) => ({
     slug: post.slug.current,
   }));
 }
 
-function formatDate(dateString: string) {
+function formatDate(dateString: string | undefined) {
+  if (!dateString) return "Recently";
   return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -106,11 +60,13 @@ function formatDate(dateString: string) {
 function renderContent(content: BlogPost["content"]) {
   if (!content) return null;
 
-  return content.map((block) => {
+  return content.map((block, index) => {
     if (block._type === "block" && block.children) {
-      const text = block.children.map((child) => child.text).join("");
+      const text = block.children
+        .map((child) => ("text" in child ? child.text : ""))
+        .join("");
       return (
-        <p key={block._key} className="mb-4">
+        <p key={block._key || index} className="mb-4">
           {text}
         </p>
       );
@@ -122,21 +78,17 @@ function renderContent(content: BlogPost["content"]) {
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
 
-  let post: BlogPost | null = null;
-
-  try {
-    post = await getBlogPost(slug);
-  } catch (error) {
-    console.error("Error fetching blog post:", error);
-  }
+  const fetchedPost = await getBlogPost(slug);
 
   // Use placeholder for demo slugs
+  const post = fetchedPost || (
+    (slug === "getting-started" || slug === "productivity-tips" || slug === "strategic-planning")
+      ? { ...placeholderPost, slug: { current: slug } }
+      : null
+  );
+
   if (!post) {
-    if (slug === "getting-started" || slug === "productivity-tips" || slug === "strategic-planning") {
-      post = { ...placeholderPost, slug: { current: slug } };
-    } else {
-      notFound();
-    }
+    notFound();
   }
 
   return (

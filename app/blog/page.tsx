@@ -7,44 +7,39 @@ export const metadata: Metadata = {
   description: "Insights, tips, and stories to help you on your journey.",
 };
 
-interface BlogPost {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  excerpt?: string;
-  publishedAt: string;
-  category?: string;
-}
-
 // Placeholder posts when Sanity has no content
 const placeholderPosts = [
   {
     _id: "1",
+    _type: "blogPost" as const,
     title: "Getting Started: A Guide to Success",
     slug: { current: "getting-started" },
     excerpt: "Learn the fundamental principles that will set you on the path to achieving your goals.",
     publishedAt: new Date().toISOString(),
-    category: "Guides",
+    category: "ministry" as const,
   },
   {
     _id: "2",
+    _type: "blogPost" as const,
     title: "5 Tips for Better Productivity",
     slug: { current: "productivity-tips" },
     excerpt: "Discover practical strategies to maximize your efficiency and get more done.",
     publishedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    category: "Tips",
+    category: "vocal-training" as const,
   },
   {
     _id: "3",
+    _type: "blogPost" as const,
     title: "The Power of Strategic Planning",
     slug: { current: "strategic-planning" },
     excerpt: "Why having a clear strategy is essential for long-term success in any endeavor.",
     publishedAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-    category: "Strategy",
+    category: "choir-tips" as const,
   },
 ];
 
-function formatDate(dateString: string) {
+function formatDate(dateString: string | undefined) {
+  if (!dateString) return "Recently";
   return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -53,13 +48,7 @@ function formatDate(dateString: string) {
 }
 
 export default async function BlogPage() {
-  let posts: BlogPost[] = [];
-
-  try {
-    posts = await getBlogPosts();
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-  }
+  const posts = await getBlogPosts();
 
   // Use placeholder if no posts in Sanity
   const displayPosts = posts.length > 0 ? posts : placeholderPosts;
@@ -110,7 +99,7 @@ export default async function BlogPage() {
                   )}
                   <div className="mt-4 flex items-center justify-between">
                     <time
-                      dateTime={post.publishedAt}
+                      dateTime={post.publishedAt || ""}
                       className="text-xs text-zinc-500 dark:text-zinc-500"
                     >
                       {formatDate(post.publishedAt)}
